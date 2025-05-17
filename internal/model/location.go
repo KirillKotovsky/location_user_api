@@ -7,7 +7,7 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
-// DTO — для HTTP-запроса
+// DTO —  http request
 type LocationUpdateRequest struct {
 	Username  string    `json:"username" binding:"required,alphanum,min=4,max=16"`
 	Latitude  float64   `json:"latitude" binding:"required"`
@@ -15,7 +15,7 @@ type LocationUpdateRequest struct {
 	Timestamp time.Time `json:"timestamp,omitempty"`
 }
 
-// GORM-модель — для хранения в БД
+// GORM-model
 type UserLocation struct {
 	ID        uint   `gorm:"primaryKey"`
 	Username  string `gorm:"index;not null"`
@@ -24,7 +24,7 @@ type UserLocation struct {
 	Timestamp time.Time `gorm:"not null"`
 }
 
-// Преобразование DTO → GORM
+// DTO → GORM
 func (r LocationUpdateRequest) ToEntity() UserLocation {
 	t := r.Timestamp
 	if t.IsZero() {
@@ -38,7 +38,7 @@ func (r LocationUpdateRequest) ToEntity() UserLocation {
 	}
 }
 
-// (Опционально) GORM → DTO
+// GORM → DTO
 func (u UserLocation) ToDTO() LocationUpdateRequest {
 	return LocationUpdateRequest{
 		Username:  u.Username,
